@@ -10,8 +10,16 @@ namespace WPGraphQL\ACF\Mutations;
 
 use WP_Post_Type;
 
+// add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $mutation_name, $context, $info) {
+//     if ($mutation_name->name === "my_post_type") {
+//         if (isset($input['customInput'])) update_post_meta($post_id, 'custom_input', $input['customInput']);
+//     }
+// }, 10, 5);
+
 /**
  * PostObject class.
+ * Maps the above comment to acf fields
+
  */
 class PostObject
 {

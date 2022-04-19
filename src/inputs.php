@@ -8,8 +8,16 @@
 
 namespace WPGraphQL\ACF\Mutations;
 
+// add_filter('graphql_input_fields', function ($fields, $type_name) {
+//     if ($type_name === "CreateMyCustomInput")
+//         $fields['customInput'] = [
+//             'type' => 'String',
+//         ];
+//     return $fields;
+// }, 10, 2);
 /**
  * Inputs class.
+ * Maps the above comment to acf fields
  */
 class Inputs
 {
