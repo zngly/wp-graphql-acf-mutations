@@ -8,7 +8,7 @@
         "acf",
         "mutations"
     ],
-    "license": "DBAD",
+    "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Vlad Medves",
