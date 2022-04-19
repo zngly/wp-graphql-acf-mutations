@@ -1,15 +1,22 @@
-Composer Library Template
-=========================
+## Zngly - WpGraphql ACF Mutations
 
-If you are trying to create a new PHP Composer library, whether it will be going to submitted to packagist.org or just in your Github account, this template of files will surely help you make the process a lot easier and faster.
+Wordpress plugin which add mutations to ACF Fields
 
-Features
---------
+### Usage
 
-* PSR-4 autoloading compliant structure
-* Unit-Testing with PHPUnit
-* Comprehensive Guides and tutorial
-* Easy to use to any framework or even a plain php file
+Install and Activate plugin
 
+Acf fields should show up in mutations
 
-I encourage that you put more information on this readme file instead of leaving it as is. See [How to make a README file](http://www.darwinbiler.com/designing-and-making-the-readme-file-for-your-github-repository/) for more info.
+### Specify Graphql Type
+
+If an acf type needs a specific graphql type such as a custom enum then specify
+`"strict_graphql_type" => "MyCustomEnum"` in your acf config.
+
+### Limitations
+
+Currently the mutations will not be set for objects with more than one child deep.
+
+### Future Work
+
+All mutations will be aggregated under a custom input type
