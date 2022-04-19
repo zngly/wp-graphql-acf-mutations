@@ -1,0 +1,76 @@
+<?php
+
+/**
+ * Config for WPGraphQL ACF
+ *
+ * @package wp-graphql-acf
+ */
+
+namespace WPGraphQL\ACF\Mutations;
+
+/**
+ * Inputs class.
+ */
+class Inputs
+{
+    /**
+     * @var Config <string> List of field groups and fields
+     */
+    protected $config;
+
+    /**
+     * @var array
+     */
+    protected $input_fields;  // <array> List of mutation input fields
+
+    public function __construct()
+    {
+        add_filter('graphql_input_fields', function ($input_fields, $type) {
+            /**
+             * Set the config, this gives us access to the field groups
+             */
+            $this->config = new Config();
+
+            /**
+             * Set the fields as class variables
+             */
+            $this->input_fields = $input_fields;
+
+            /**
+             * Register input fields
+             */
+            $this->register_inputs($type);
+
+            return $this->input_fields;
+        }, 10, 2);
+    }
+
+    protected function register_inputs($type_name)
+    {
+        foreach ($this->config->field_groups as $field_group)
+            foreach ($field_group['graphql_types'] as $graphql_type)
+                if (in_array($type_name, ["Create{$graphql_type}Input", "Update{$graphql_type}Input"]))
+                    foreach ($field_group['fields'] as $field) {
+                        if (isset($field['strict_graphql_type']) && $field['strict_graphql_type'] != "")
+                            $type = $field['strict_graphql_type'];
+                        else
+                            $type = $this->config->get_acf_type($graphql_type, $field, $field_group);
+
+                        if (
+                            $field['type'] == "file" ||
+                            $field['type'] == "image" ||
+                            $type == null
+                        )
+                            continue;
+
+                        $friendly_type_name = $type;
+                        if (is_array($friendly_type_name))
+                            $friendly_type_name = json_encode($friendly_type_name);
+
+                        $this->input_fields[$field['graphql_name']] = [
+                            'type' => $type,
+                            'description' => $field['description'] . $friendly_type_name,
+                        ];
+                    }
+    }
+}
