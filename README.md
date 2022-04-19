@@ -2,6 +2,12 @@
 
 Wordpress plugin which add mutations to ACF Fields
 
+### Install
+
+https://packagist.org/packages/zngly/wp-graphql-acf-mutations
+
+`composer require zngly/wp-graphql-acf-mutations`
+
 ### Usage
 
 Install and Activate plugin
