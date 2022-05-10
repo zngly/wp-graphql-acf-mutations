@@ -64,11 +64,7 @@ class Inputs
                         else
                             $type = $this->config->get_acf_type($graphql_type, $field, $field_group);
 
-                        if (
-                            $field['type'] == "file" ||
-                            $field['type'] == "image" ||
-                            $type == null
-                        )
+                        if ($type == null)
                             continue;
 
                         $friendly_type_name = $type;
