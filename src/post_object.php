@@ -9,6 +9,7 @@
 namespace WPGraphQL\ACF\Mutations;
 
 use WP_Post_Type;
+use WPGraphQL\Utils\Utils;
 
 // add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $mutation_name, $context, $info) {
 //     if ($mutation_name->name === "my_post_type") {
@@ -114,10 +115,15 @@ class PostObject
                             continue;
                         }
 
-                        /**
-                         * update a standalone acf field
-                         */
+                        // check if the field exists
                         if (isset($input[$field['graphql_name']])) {
+                            // if file types are images or file, make sure an ID is passed
+                            if (in_array($field['type'], ['image', 'file']))
+                                $input[$field['graphql_name']] = Utils::get_database_id_from_id($input[$field['graphql_name']]);
+
+                            /**
+                             * update a standalone acf field
+                             */
                             update_post_meta($post_id, $field['name'], $input[$field['graphql_name']]);
                         }
                     }
