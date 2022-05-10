@@ -324,8 +324,12 @@ class Config
                 break;
             case 'image':
             case 'file':
-                // $final_type = 'MediaItem';
-                // Currently unsupported;
+                $type = 'ID';
+
+                if (isset($config['multiple']) && 1 === $config['multiple'])
+                    $type = ['list_of' => $type];
+
+                $final_type = $type;
                 break;
             case 'checkbox':
                 $final_type = ['list_of' => 'String'];
