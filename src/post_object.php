@@ -9,7 +9,7 @@
 namespace WPGraphQL\ACF\Mutations;
 
 use WP_Post_Type;
-use WPGraphQL\Utils\Utils;
+use WPGraphQL\Utils\Utils as WpGraphqlUtils;
 
 // add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $mutation_name, $context, $info) {
 //     if ($mutation_name->name === "my_post_type") {
@@ -115,11 +115,18 @@ class PostObject
                             continue;
                         }
 
+
                         // check if the field exists
                         if (isset($input[$field['graphql_name']])) {
+                            $curr_input = $input[$field['graphql_name']];
                             // if file types are images or file, make sure an ID is passed
+                            // accept guid or ids
                             if (in_array($field['type'], ['image', 'file']))
-                                $input[$field['graphql_name']] = Utils::get_database_id_from_id($input[$field['graphql_name']]);
+                                $input[$field['graphql_name']] = self::mapPostIdsFromGids($curr_input);
+
+                            // accept guid or ids
+                            if ($field['type'] === 'post_object')
+                                $input[$field['graphql_name']] = self::mapPostIdsFromGids($curr_input);
 
                             /**
                              * update a standalone acf field
@@ -129,5 +136,34 @@ class PostObject
                     }
                 }
             }
+    }
+
+    public static function mapPostIdsFromGids($gids)
+    {
+        if (is_array($gids)) {
+            $ids = [];
+            foreach ($gids as $gid) {
+                $ids[] = WpGraphqlUtils::get_database_id_from_id($gid);
+            }
+            return $ids;
+        } else {
+            return WpGraphqlUtils::get_database_id_from_id($gids);
+        }
+    }
+
+
+    public static function getPostIdsFromGids($gids)
+    {
+        $postIds = [];
+        foreach ($gids as $gid) {
+            $postIds[] = WpGraphqlUtils::get_database_id_from_id($gid);
+        }
+
+        return $postIds;
+    }
+
+    public static function getPostIdFromGid($gids)
+    {
+        return WpGraphqlUtils::get_database_id_from_id($gids);
     }
 }
