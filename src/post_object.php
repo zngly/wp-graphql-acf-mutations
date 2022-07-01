@@ -60,10 +60,10 @@ class PostObject
                                     $graphql_name = $this->config::camel_case($sub_field['name']);
 
                                     if (isset($input[$field['graphql_name']][$graphql_name]) && $field['type'] === 'group') {
-                                        $key = $field['name'] . "_" . $sub_field['name'];
+                                        $field_name = $field['name'] . "_" . $sub_field['name'];
                                         $value = $input[$field['graphql_name']][$graphql_name];
 
-                                        update_post_meta($post_id, $key, $value);
+                                        self::updateField($post_id, $value, $field_name, $sub_field['type']);
                                     }
                                 }
                             }
@@ -94,6 +94,7 @@ class PostObject
                                     continue;
                                 }
 
+                                // set repeater fields
                                 foreach ($input[$field['graphql_name']] as $r_key => $r_value) {
                                     foreach ($field['sub_fields'] as $sub_field) {
                                         $graphql_name = $this->config::camel_case($sub_field['name']);
@@ -115,24 +116,9 @@ class PostObject
                             continue;
                         }
 
-
                         // check if the field exists
-                        if (isset($input[$field['graphql_name']])) {
-                            $curr_input = $input[$field['graphql_name']];
-                            // if file types are images or file, make sure an ID is passed
-                            // accept guid or ids
-                            if (in_array($field['type'], ['image', 'file']))
-                                $input[$field['graphql_name']] = self::mapPostIdsFromGids($curr_input);
-
-                            // accept guid or ids
-                            if ($field['type'] === 'post_object')
-                                $input[$field['graphql_name']] = self::mapPostIdsFromGids($curr_input);
-
-                            /**
-                             * update a standalone acf field
-                             */
-                            update_post_meta($post_id, $field['name'], $input[$field['graphql_name']]);
-                        }
+                        if (isset($input[$field['graphql_name']]))
+                            self::updateField($post_id, $input[$field['graphql_name']], $field['name'], $field['type']);
                     }
                 }
             }
@@ -149,6 +135,23 @@ class PostObject
         } else {
             return WpGraphqlUtils::get_database_id_from_id($gids);
         }
+    }
+
+    public static function updateField($post_id, $value, $field_name, $field_type)
+    {
+        // if file types are images or file, make sure an ID is passed
+        // accept guid or ids
+        if (in_array($field_type, ['image', 'file']))
+            $value = self::mapPostIdsFromGids($value);
+
+        // accept guid or ids
+        if ($field_type === 'post_object')
+            $value = self::mapPostIdsFromGids($value);
+
+        /**
+         * update a standalone acf field
+         */
+        update_post_meta($post_id, $field_name, $value);
     }
 
 
