@@ -22,9 +22,6 @@ require_once(__DIR__ . '/src/inputs.php');
 require_once(__DIR__ . '/src/mutations.php');
 require_once(__DIR__ . '/src/register.php');
 
-require_once(__DIR__ . '/vendor/plugins/advanced-custom-fields/acf.php');
-require_once(__DIR__ . '/vendor/plugins/wp-graphql/wp-graphql.php');
-
 /**
  * Initialize the plugin
  *
@@ -45,7 +42,7 @@ function init()
     new Inputs();
 
     // run the post object actions
-    new PostObject();
+    new Mutations();
 }
 
 add_action('init', '\WPGraphQL\ACF\Mutations\init');

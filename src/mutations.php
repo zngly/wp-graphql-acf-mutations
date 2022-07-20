@@ -18,11 +18,11 @@ use WPGraphQL\Utils\Utils as WpGraphqlUtils;
 // }, 10, 3);
 
 /**
- * PostObject class.
+ * Mutations class.
  * Maps the above comment to acf fields
 
  */
-class PostObject
+class Mutations
 {
     /**
      * @var Config <string> List of field groups and fields
