@@ -7,3 +7,5 @@ composer.lock
 
 # OS specific
 .DS_Store/
+
+wordpress

@@ -1,5 +1,5 @@
 {
-    "version": "1.0.5",
+    "version": "1.0.6",
     "name": "zngly/wp-graphql-acf-mutations",
     "description": "ACF Mutations for WP GraphQL",
     "homepage": "https://github.com/zngly/wp-graphql-acf-mutations",
@@ -19,14 +19,42 @@
     ],
     "type": "wordpress-plugin",
     "require": {
-        "php": "^7.1 || ^8.0"
+        "php": "^7.0 || ^8.0"
     },
     "support": {
         "source": "https://github.com/zngly/wp-graphql-acf-mutations",
         "issues": "https://github.com/zngly/wp-graphql-acf-mutations/issues"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        },
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*",
+                "wpackagist-theme/*"
+            ]
+        }
+    ],
+    "extra": {
+        "wordpress-install-dir": "./wordpress",
+        "installer-paths": {
+            "wordpress/wp-content/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ]
+        }
+    },
+    "config": {
+        "vendor-dir": "./wordpress/vendor"
+    },
     "require-dev": {
-        "phpunit/phpunit": "^6.0"
+        "johnpbloch/wordpress": ">=6.0",
+        "wp-graphql/wp-graphql": "^1.8",
+        "wp-graphql/wp-graphql-acf": "^0.5.3",
+        "wpackagist-plugin/advanced-custom-fields": "dev-trunk"
     },
     "autoload": {
         "psr-4": {

@@ -11,11 +11,11 @@ namespace WPGraphQL\ACF\Mutations;
 use WP_Post_Type;
 use WPGraphQL\Utils\Utils as WpGraphqlUtils;
 
-// add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $mutation_name, $context, $info) {
-//     if ($mutation_name->name === "my_post_type") {
+// add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
+//     if ($post_type_object->name === "my_post_type") {
 //         if (isset($input['customInput'])) update_post_meta($post_id, 'custom_input', $input['customInput']);
 //     }
-// }, 10, 5);
+// }, 10, 3);
 
 /**
  * PostObject class.
@@ -31,10 +31,15 @@ class PostObject
 
     public function __construct()
     {
-        add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $mutation, $context, $info) {
+        add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
             $this->config = new Config();
-            $this->post_object_mutation_action($post_id, $input, $mutation, $context, $info);
-        }, 10, 5);
+            $this->post_object_mutation_action($post_id, $input, $post_type_object);
+        }, 10, 3);
+
+        add_action('graphql_media_item_mutation_update_additional_data', function ($media_item_id, $input, $post_type_object) {
+            $this->config = new Config();
+            $this->post_object_mutation_action($media_item_id, $input, $post_type_object);
+        }, 10, 3);
     }
 
     /**
@@ -42,9 +47,9 @@ class PostObject
      * @todo: refactor code so that it can recursively update nested fields
      * @todo: delete acf metadate if the value is null
      */
-    protected function post_object_mutation_action($post_id, $input, WP_Post_Type $mutation, $context, $info)
+    protected function post_object_mutation_action($post_id, $input, WP_Post_Type $post_type_object)
     {
-        $type_name = ucfirst($mutation->graphql_single_name);
+        $type_name = ucfirst($post_type_object->graphql_single_name);
 
         foreach ($this->config->field_groups as $field_group)
             foreach ($field_group['graphql_types'] as $graphql_type) {
