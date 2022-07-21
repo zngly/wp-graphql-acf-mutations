@@ -12,9 +12,7 @@
         "type": "git",
         "url": "git+https://github.com/zngly/wp-graphql-acf-mutations.git"
     },
-    "scripts": {
-        "install": "npm install --no-save"
-    },
+    "scripts": {},
     "devDependencies": {
         "chokidar": "^3.5.3"
     }

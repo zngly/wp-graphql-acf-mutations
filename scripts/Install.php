@@ -31,6 +31,7 @@ class Install
     {
 
         self::getInstance()->wordpress();
+        self::getInstance()->npm();
     }
 
     private function wordpress()
@@ -44,6 +45,8 @@ class Install
         echo $output;
 
         self::$instance->modify_wordpress();
+
+        self::print("Wordpress finished.\n");
     }
 
     private function modify_wordpress()
@@ -54,6 +57,18 @@ class Install
         $wp_config_path = $wordpress_dir . '/wp-config-sample.php';
 
         Utils::add_to_file($wp_config_path, "if(!defined('ABSPATH'))", 'require ABSPATH . "vendor/autoload.php";');
+
+        // delete all themes except twentytwentytwo
+        $themes_dir = $wordpress_dir . '/wp-content/themes';
+        $themes = scandir($themes_dir);
+        foreach ($themes as $theme) {
+            if ($theme != '.' && $theme != '..' && $theme != 'twentytwentytwo') {
+                $theme_path = $themes_dir . '/' . $theme;
+                Utils::delete_dir($theme_path);
+            }
+        }
+
+        Utils::copy_plugin();
     }
 
     private function npm()
@@ -61,7 +76,7 @@ class Install
         self::print("Installing NPM...\n");
 
         // install npm
-        $command = "cd {$this->root_dir} && npm install";
+        $command = "cd {$this->root_dir} && npm install --no-save";
         echo "running: " . $command . "\n";
         $output = shell_exec($command);
         echo $output;
