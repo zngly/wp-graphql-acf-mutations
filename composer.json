@@ -57,7 +57,7 @@
         "johnpbloch/wordpress": ">=6.0",
         "wp-graphql/wp-graphql": "^1.8",
         "wp-graphql/wp-graphql-acf": "^0.5.3",
-        "wpackagist-plugin/advanced-custom-fields": "dev-trunk",
+        "wordpress-plugin/advanced-custom-fields-pro": "^5.9",
         "wpackagist-theme/twentytwentytwo": "*",
         "spatie/file-system-watcher": "^1.1"
     },
