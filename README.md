@@ -23,6 +23,16 @@ If an acf type needs a specific graphql type such as a custom enum then specify
 
 Currently the mutations will not be set for objects with more than one child deep.
 
-### Future Work
+### Dev Usage
 
-All mutations will be aggregated under a custom input type
+-   clone the repository
+-   make sure you have composer and npm installed on your system
+-   make sure you have XAMPP or something similar installed on your system
+-   this will install wordpress along with the plugin
+
+-   `composer install:dev`
+-   `composer watch`
+
+-   goto your wordpress installation in your localhost browser
+-   finish the wordpress installation
+-   activate all plugins
