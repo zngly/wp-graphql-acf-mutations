@@ -1,0 +1,19 @@
+{
+    "name": "wp-graphql-acf-mutations",
+    "version": "1.0.0",
+    "description": "wp-graphql-acf-mutations",
+    "homepage": "https://github.com/zngly/wp-graphql-acf-mutations#readme",
+    "author": "Vlad-Anton Medves",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/zngly/wp-graphql-acf-mutations/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zngly/wp-graphql-acf-mutations.git"
+    },
+    "scripts": {},
+    "devDependencies": {
+        "chokidar": "^3.5.3"
+    }
+}

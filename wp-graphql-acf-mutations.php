@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:       WPGraphQL for Advanced Custom Fields - ACF Mutations
+ * Plugin Name:       WPGraphQL ACF Mutations
  * Description:       Adds Advanced Custom Fields Mutations to the WPGraphQL Schema
  * Author:            Vlad-Anton Medves
  * Text Domain:       wp-graphql-acf
