@@ -1,5 +1,5 @@
 {
-    "version": "1.0.7",
+    "version": "1.0.8",
     "name": "zngly/wp-graphql-acf-mutations",
     "description": "ACF Mutations for WP GraphQL",
     "homepage": "https://github.com/zngly/wp-graphql-acf-mutations",
@@ -8,7 +8,8 @@
         "wpgraphql",
         "package",
         "acf",
-        "mutations"
+        "mutations",
+        "graphql"
     ],
     "license": "GPL-3.0+",
     "authors": [
