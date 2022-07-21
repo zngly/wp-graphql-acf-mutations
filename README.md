@@ -19,6 +19,9 @@ Acf fields should show up in mutations
 If an acf type needs a specific graphql type such as a custom enum then specify
 `"strict_graphql_type" => "MyCustomEnum"` in your acf config.
 
+![image](https://user-images.githubusercontent.com/87081580/180242118-a887435c-d665-44aa-b569-c50cc27542c6.png)
+
+
 ### Limitations
 
 Currently the mutations will not be set for objects with more than one child deep.
