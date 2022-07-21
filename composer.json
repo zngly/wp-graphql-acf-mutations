@@ -44,6 +44,9 @@
         "installer-paths": {
             "wordpress/wp-content/plugins/{$name}/": [
                 "type:wordpress-plugin"
+            ],
+            "wordpress/wp-content/themes/{$name}/": [
+                "type:wordpress-theme"
             ]
         }
     },
@@ -54,28 +57,28 @@
         "johnpbloch/wordpress": ">=6.0",
         "wp-graphql/wp-graphql": "^1.8",
         "wp-graphql/wp-graphql-acf": "^0.5.3",
-        "wpackagist-plugin/advanced-custom-fields": "dev-trunk"
+        "wpackagist-plugin/advanced-custom-fields": "dev-trunk",
+        "wpackagist-theme/twentytwentytwo": "*",
+        "spatie/file-system-watcher": "^1.1"
     },
     "autoload": {
         "psr-4": {
-            "WPGraphQL\\ACF\\Mutations\\": "src/"
+            "WPGraphQL\\ACF\\Mutations\\": "src/",
+            "Zngly\\ACF\\Scripts\\": "scripts/",
+            "\\": "wordpress/vendor/"
         },
         "classmap": [
-            "src/"
+            "src",
+            "scripts",
+            "wordpress/vendor"
         ]
     },
     "scripts": {
-        "test": [
-            "@php vendor/bin/phpunit"
+        "install:dev": [
+            "Zngly\\ACF\\Scripts\\Install::run"
         ],
-        "psr2check": [
-            "@php vendor/bin/phpcs --standard=PSR2 src/"
-        ],
-        "psr2autofix": [
-            "@php vendor/bin/phpcbf --standard=PSR2 src/"
-        ],
-        "docs": [
-            "@php vendor/bin/phpdoc -d \"src\" -t \"docs\""
+        "watch": [
+            "Zngly\\ACF\\Scripts\\Watcher::run"
         ]
     }
 }
