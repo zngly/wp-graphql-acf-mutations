@@ -335,7 +335,7 @@ class Config
                 $final_type = ['list_of' => 'String'];
                 break;
             case 'gallery':
-                $final_type = ['list_of' => 'MediaItem'];
+                $final_type = ['list_of' => 'ID'];
                 break;
             case 'user':
                 $type = 'User';
