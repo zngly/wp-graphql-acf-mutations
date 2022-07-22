@@ -63,26 +63,19 @@
         "spatie/file-system-watcher": "^1.1"
     },
     "autoload-dev": {
-        "psr-4": {
-            "WPGraphQL\\ACF\\Mutations\\": "src/",
-            "Zngly\\ACF\\Scripts\\": "scripts/",
-            "\\": "wordpress/vendor/"
-        },
         "classmap": [
-            "src",
-            "scripts",
-            "wordpress/vendor"
+            "src/",
+            "scripts/",
+            "dev/"
         ]
     },
     "autoload": {
-        "psr-4": {
-            "WPGraphQL\\ACF\\Mutations\\": "src/"
-        },
         "classmap": [
             "src/"
         ]
     },
     "scripts": {
+        "install": "composer install --no-dev",
         "install:dev": [
             "Zngly\\ACF\\Scripts\\Install::run"
         ],

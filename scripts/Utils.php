@@ -94,6 +94,20 @@ class Utils
         closedir($dir);
     }
 
+    public static function regenerate_autoloader()
+    {
+        $root_dir = self::get_root_dir();
+
+        // execute composer dump-autoload -o
+        $command = "cd {$root_dir} && composer dump-autoload -o";
+        $output = exec($command);
+        echo $output;
+    }
+
+    public static function format_path(string $path)
+    {
+        return str_replace('\\', '/', $path);
+    }
 
     public static function get_root_dir()
     {

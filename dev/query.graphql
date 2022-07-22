@@ -1,0 +1,82 @@
+mutation Content_Update_Mutation {
+    updateZnglyVideo(
+        input: {
+            id: "cG9zdDo5OTA2Mjg="
+            status: PENDING
+            tags: { nodes: [{ name: "tag" }, { name: "two" }, { name: "three" }, { name: "test" }], append: false }
+        }
+    ) {
+        znglyVideo {
+            title
+            status
+            tags {
+                nodes {
+                    name
+                }
+            }
+        }
+    }
+}
+
+query MyQuery5 {
+    znglyVideos(where: { status: PENDING }) {
+        nodes {
+            title
+            id
+            tags {
+                nodes {
+                    name
+                }
+            }
+        }
+    }
+}
+
+query MyQuery2 {
+    users(first: 100) {
+        nodes {
+            id
+            databaseId
+            username
+            role
+        }
+    }
+}
+
+query AuthorIn {
+    znglyVideos(where: { author: 2 }) {
+        nodes {
+            title
+            author {
+                node {
+                    username
+                    databaseId
+                    id
+                }
+            }
+        }
+    }
+}
+
+query setttings {
+    znglyInfo(id: "site-info", idType: SLUG) {
+        databaseId
+        znglyInfo {
+            address1
+            address2
+            address3
+        }
+    }
+}
+
+mutation MyMutation2 {
+    updateMediaItem(input: { id: "cG9zdDoxNzcw", coords: "testing" }) {
+        mediaItem {
+            id
+            title
+            fields {
+                coords
+            }
+        }
+    }
+}
