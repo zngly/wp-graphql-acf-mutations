@@ -2,10 +2,6 @@
 
 namespace Zngly\ACF\Dev;
 
-if (!defined('ABSPATH')) return;
-// if add_action is not defined, return
-if (!function_exists('add_action')) return;
-
 require_once __DIR__ . '/acf/acf.php';
 
 class Init
