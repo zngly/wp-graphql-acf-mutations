@@ -1,5 +1,5 @@
 {
-    "version": "1.0.11",
+    "version": "1.0.12",
     "name": "zngly/wp-graphql-acf-mutations",
     "description": "ACF Mutations for WP GraphQL",
     "homepage": "https://github.com/zngly/wp-graphql-acf-mutations",
@@ -63,26 +63,19 @@
         "spatie/file-system-watcher": "^1.1"
     },
     "autoload-dev": {
-        "psr-4": {
-            "WPGraphQL\\ACF\\Mutations\\": "src/",
-            "Zngly\\ACF\\Scripts\\": "scripts/",
-            "\\": "wordpress/vendor/"
-        },
         "classmap": [
-            "src",
-            "scripts",
-            "wordpress/vendor"
+            "src/",
+            "scripts/",
+            "dev/"
         ]
     },
     "autoload": {
-        "psr-4": {
-            "WPGraphQL\\ACF\\Mutations\\": "src/"
-        },
         "classmap": [
             "src/"
         ]
     },
     "scripts": {
+        "install": "composer install --no-dev",
         "install:dev": [
             "Zngly\\ACF\\Scripts\\Install::run"
         ],

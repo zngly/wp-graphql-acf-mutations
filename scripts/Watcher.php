@@ -21,21 +21,25 @@ class Watcher
         $plugin_folder = Utils::get_root_dir() . "/wordpress/wp-content/plugins/{$plugin_name}";
 
         // watch for any file changes in the directory
-        self::watch_dirs([$src_folder, "{$plugin_folder}/{$plugin_name}.php"]);
+        self::watch_dirs([$src_folder,  "{$plugin_folder}/{$plugin_name}.php"]);
     }
-
-
 
     // function to watch a directory for changes
     public static function watch_dirs(array $dirs)
     {
         $root_dir = Utils::get_root_dir();
-        $plugins_folder = $root_dir . "/wordpress/wp-content/plugins/" . Utils::get_plugin_name();
+        $plugins_folder = Utils::format_path($root_dir . "/wordpress/wp-content/plugins/" . Utils::get_plugin_name());
 
         Watch::paths(...$dirs)
             ->onAnyChange(function (string $type, string $path) use ($root_dir, $plugins_folder) {
+                // format path forwardslashes
+                $path = Utils::format_path($path);
+
+                // find the new path to the change
                 $path_parts = explode($root_dir, $path);
                 $new_path = $plugins_folder . $path_parts[1];
+
+                echo "{$type}: {$path}\n";
 
                 switch ($type) {
                     case Watch::EVENT_TYPE_DIRECTORY_CREATED:

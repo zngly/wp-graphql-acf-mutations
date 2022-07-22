@@ -53,10 +53,20 @@ class Install
     {
         self::print("Modifying Wordpress...\n");
 
+        // add autoload to wp-config
         $wordpress_dir = $this->root_dir . '/wordpress';
-        $wp_config_path = $wordpress_dir . '/wp-config-sample.php';
+        Utils::add_to_file($wordpress_dir . '/wp-config.php', "if(!defined('ABSPATH'))", 'require ABSPATH . "vendor/autoload.php";');
 
-        Utils::add_to_file($wp_config_path, "if(!defined('ABSPATH'))", 'require ABSPATH . "vendor/autoload.php";');
+        // load our dev code here
+        // create a new file called zngly.php in the mu-plugins folder
+        $zngly_path = Utils::format_path($wordpress_dir . '/wp-content/mu-plugins/zngly_autoloader.php');
+
+        // create the file
+        $zngly_file = fopen($zngly_path, 'w');
+        // write the contents
+        fwrite($zngly_file, "<?php\n\nuse Zngly\ACF\Dev\Init;\nInit::run();\n\n");
+        // close the file
+        fclose($zngly_file);
 
         // delete all themes except twentytwentytwo
         $themes_dir = $wordpress_dir . '/wp-content/themes';
