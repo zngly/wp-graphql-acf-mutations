@@ -30,9 +30,6 @@ function init()
     if (!can_load_plugin())
         return;
 
-    // register acf input types
-    new RegisterInputs();
-
     // run the inputs filtering
     new Inputs();
 

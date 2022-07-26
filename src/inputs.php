@@ -59,10 +59,11 @@ class Inputs
             foreach ($field_group['graphql_types'] as $graphql_type)
                 if (in_array($type_name, ["Create{$graphql_type}Input", "Update{$graphql_type}Input"]))
                     foreach ($field_group['fields'] as $field) {
+
+                        // check if there is a custom strict type set, otherwise we infer it
                         if (isset($field['strict_graphql_type']) && $field['strict_graphql_type'] != "")
                             $type = $field['strict_graphql_type'];
-                        else
-                            $type = $this->config->get_acf_type($graphql_type, $field, $field_group);
+                        else $type = $this->config->get_acf_type($graphql_type, $field, $field_group);
 
                         if ($type == null)
                             continue;

@@ -65,7 +65,6 @@ class RegisterInputs
      */
     protected function register_input_type(string $type_name, array $config, array $field_group)
     {
-        // $acf_field = isset($config) ? $config : null;
         $acf_type  = isset($config['type']) ? $config['type'] : null;
 
         if (empty($acf_type))
