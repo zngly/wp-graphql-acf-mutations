@@ -37,7 +37,7 @@ function init()
     new RegisterInputs();
 
     // run the post object actions
-    new Mutations();
+    Mutations::registerMutations();
 }
 
 add_action('init', '\Zngly\ACFM\init');

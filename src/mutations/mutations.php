@@ -22,7 +22,7 @@ use Zngly\ACFM\Utils as ACFMUtils;
 
 class Mutations
 {
-    public function __construct()
+    public static function registerMutations()
     {
         new MediaItem();
         new PostObject();
