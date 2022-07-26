@@ -17,11 +17,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-require_once(__DIR__ . '/src/config.php');
-require_once(__DIR__ . '/src/inputs.php');
-require_once(__DIR__ . '/src/mutations.php');
-require_once(__DIR__ . '/src/register.php');
-
 /**
  * Initialize the plugin
  *
