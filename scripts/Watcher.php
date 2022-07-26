@@ -44,17 +44,19 @@ class Watcher
                 $path_parts = explode($root_dir, $path);
                 $new_path = $plugins_folder . $path_parts[1];
 
-                echo "{$type}: {$path}\n";
+                echo "{$type}: {$new_path}\n";
 
                 switch ($type) {
                     case Watch::EVENT_TYPE_DIRECTORY_CREATED:
                         mkdir($new_path, 0777, true);
                         break;
                     case Watch::EVENT_TYPE_DIRECTORY_DELETED:
-                        rmdir($new_path);
+                        if (is_dir($new_path))
+                            rmdir($new_path);
                         break;
                     case Watch::EVENT_TYPE_FILE_DELETED:
-                        unlink($new_path);
+                        if (file_exists($new_path))
+                            unlink($new_path);
                         break;
                     case Watch::EVENT_TYPE_FILE_CREATED:
                     case Watch::EVENT_TYPE_FILE_UPDATED:
