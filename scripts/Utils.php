@@ -111,16 +111,16 @@ class Utils
 
     public static function get_root_dir()
     {
-        return dirname(dirname(__FILE__));
+        return self::format_path(dirname(dirname(__FILE__)));
     }
 
     public static function get_root_name()
     {
-        return basename(dirname(dirname(__FILE__)));
+        return self::format_path(basename(dirname(dirname(__FILE__))));
     }
 
     public static function get_plugin_name()
     {
-        return basename(dirname(dirname(__FILE__)));
+        return self::format_path(basename(dirname(dirname(__FILE__))));
     }
 }

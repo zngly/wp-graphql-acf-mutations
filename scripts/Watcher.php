@@ -13,8 +13,10 @@ class Watcher
 
     public static function run()
     {
+        Utils::copy_plugin();
+
         // get the directory to watch
-        $src_folder = dirname(dirname(__FILE__)) . '/src';
+        $src_folder = Utils::get_root_dir() . '/src';
 
         // get all the files in the directory recursively
         $plugin_name = Utils::get_plugin_name();
@@ -55,9 +57,8 @@ class Watcher
                     case Watch::EVENT_TYPE_FILE_UPDATED:
                         copy($path, $new_path);
                         break;
-
                     default:
-                        echo "Event Happened: {$type} - from {$path} - to {$new_path}\n";
+                        echo "Event Happened but no action taken: {$type} - from {$path} - to {$new_path}\n";
                         break;
                 }
             })
