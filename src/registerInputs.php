@@ -16,10 +16,10 @@ namespace Zngly\ACFM;
 //     return $fields;
 // }, 10, 2);
 /**
- * Inputs class.
+ * RegisterInputs class.
  * Maps the above comment to acf fields
  */
-class Inputs
+class RegisterInputs
 {
     /**
      * @var Config <string> List of field groups and fields

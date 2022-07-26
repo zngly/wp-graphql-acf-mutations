@@ -11,9 +11,9 @@ namespace Zngly\ACFM;
 use WPGraphQL\Registry\TypeRegistry;
 
 /**
- * RegisterInputs class.
+ * RegisterTypes class.
  */
-class RegisterInputs
+class RegisterTypes
 {
     /**
      * @var TypeRegistry

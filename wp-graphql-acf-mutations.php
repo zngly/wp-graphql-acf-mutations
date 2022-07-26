@@ -30,8 +30,11 @@ function init()
     if (!can_load_plugin())
         return;
 
+    // register acf input types such as groups
+    new RegisterTypes();
+
     // run the inputs filtering
-    new Inputs();
+    new RegisterInputs();
 
     // run the post object actions
     new Mutations();
