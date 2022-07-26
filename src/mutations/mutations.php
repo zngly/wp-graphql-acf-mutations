@@ -56,7 +56,7 @@ class Mutations
                                         $field_name = $field['name'] . "_" . $sub_field['name'];
                                         $value = $input[$field['graphql_name']][$graphql_name];
 
-                                        self::updateField($post_id, $value, $field_name, $sub_field['type']);
+                                        self::updateField($post_id, $value, $field_name, $sub_field['type'], $type_name);
                                     }
                                 }
                             }
@@ -111,7 +111,7 @@ class Mutations
 
                         // check if the field exists
                         if (isset($input[$field['graphql_name']]))
-                            self::updateField($post_id, $input[$field['graphql_name']], $field['name'], $field['type']);
+                            self::updateField($post_id, $input[$field['graphql_name']], $field['name'], $field['type'], $type_name);
                     }
                 }
             }
@@ -119,7 +119,7 @@ class Mutations
 
 
 
-    public static function updateField($post_id, $value, $field_name, $field_type)
+    public static function updateField($post_id, $value, $field_name, $field_type, $type_name)
     {
         // if file types are images or file, make sure an ID is passed
         // accept guid or ids
@@ -130,11 +130,15 @@ class Mutations
         if ($field_type === 'post_object')
             $value = ACFMUtils::mapPostIdsFromGids($value);
 
-        /**
-         * update a standalone acf field
-         */
-        update_post_meta($post_id, $field_name, $value);
+        // @todo: use acf set/get/update/delete functions
+        // current implementation does not take into account the _field_key meta value
 
-        // update taxonomy meta 
+        if (in_array($type_name, ["Category", "Tag"]))
+            update_term_meta($post_id, $field_name, $value);
+        else
+            /**
+             * update a standalone acf field
+             */
+            update_post_meta($post_id, $field_name, $value);
     }
 }
