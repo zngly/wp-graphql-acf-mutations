@@ -34,9 +34,10 @@ class Mutations
      * @todo: refactor code so that it can recursively update nested fields
      * @todo: delete acf metadate if the value is null
      */
-    public static function post_object_mutation_action($post_id, $input, WP_Post_Type $post_type_object, Config $config)
+    public static function updater(string|int $post_id, array $input, string $type_name)
     {
-        $type_name = ucfirst($post_type_object->graphql_single_name);
+        $config = new Config();
+        $type_name = ucfirst($type_name);
 
         foreach ($config->field_groups as $field_group)
             foreach ($field_group['graphql_types'] as $graphql_type) {
@@ -133,5 +134,7 @@ class Mutations
          * update a standalone acf field
          */
         update_post_meta($post_id, $field_name, $value);
+
+        // update taxonomy meta 
     }
 }
