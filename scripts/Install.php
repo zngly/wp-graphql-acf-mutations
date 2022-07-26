@@ -1,8 +1,8 @@
 <?php
 
-namespace Zngly\ACF\Scripts;
+namespace Zngly\ACFM\Scripts;
 
-use Zngly\ACF\Scripts\Utils;
+use Zngly\ACFM\Scripts\Utils;
 
 
 class Install
@@ -64,7 +64,7 @@ class Install
         // create the file
         $zngly_file = fopen($zngly_path, 'w');
         // write the contents
-        fwrite($zngly_file, "<?php\n\nuse Zngly\ACF\Dev\Init;\nInit::run();\n\n");
+        fwrite($zngly_file, "<?php\n\nuse Zngly\ACFM\Dev\Init;\nInit::run();\n\n");
         // close the file
         fclose($zngly_file);
 

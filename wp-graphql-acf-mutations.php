@@ -11,7 +11,7 @@
  * @package         WPGraphQL_ACF_Mutations
  */
 
-namespace WPGraphQL\ACF\Mutations;
+namespace Zngly\ACFM;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -45,7 +45,7 @@ function init()
     new Mutations();
 }
 
-add_action('init', '\WPGraphQL\ACF\Mutations\init');
+add_action('init', '\Zngly\ACFM\init');
 
 /**
  * Check whether ACF and WPGraphQL are active, and whether the minimum version requirement has been

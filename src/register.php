@@ -6,7 +6,7 @@
  * @package wp-graphql-acf
  */
 
-namespace WPGraphQL\ACF\Mutations;
+namespace Zngly\ACFM;
 
 use WPGraphQL\Registry\TypeRegistry;
 
@@ -52,9 +52,10 @@ class RegisterInputs
     protected function register_input_types()
     {
         foreach ($this->config->field_groups as $field_group)
-            foreach ($field_group['graphql_types'] as $graphql_type)
-                foreach ($field_group['fields'] as $field)
-                    $this->register_input_type($graphql_type, $field, $field_group);
+            if (count($field_group['graphql_types']) > 0)
+                foreach ($field_group['graphql_types'] as $graphql_type)
+                    foreach ($field_group['fields'] as $field)
+                        $this->register_input_type($graphql_type, $field, $field_group);
     }
 
     /**

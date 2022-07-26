@@ -1,6 +1,6 @@
 <?php
 
-namespace Zngly\ACF\Scripts;
+namespace Zngly\ACFM\Scripts;
 
 require dirname(dirname(__FILE__)) . '/wordpress/vendor/autoload.php';
 
@@ -14,6 +14,7 @@ class Watcher
     public static function run()
     {
         Utils::copy_plugin();
+        self::autoload_update();
 
         // get the directory to watch
         $src_folder = Utils::get_root_dir() . '/src';
@@ -31,6 +32,8 @@ class Watcher
     {
         $root_dir = Utils::get_root_dir();
         $plugins_folder = Utils::format_path($root_dir . "/wordpress/wp-content/plugins/" . Utils::get_plugin_name());
+
+        echo "\n\nWatching Zngly\ACFM...\n\n";
 
         Watch::paths(...$dirs)
             ->onAnyChange(function (string $type, string $path) use ($root_dir, $plugins_folder) {
@@ -63,5 +66,16 @@ class Watcher
                 }
             })
             ->start();
+    }
+
+    public static function autoload_update()
+    {
+        $root_dir = Utils::get_root_dir();
+
+        // run composer dump autoload
+        $command = "cd {$root_dir} && composer dump-autoload -o";
+        echo "running: " . $command . "\n";
+        $output = shell_exec($command);
+        echo $output;
     }
 }

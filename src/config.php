@@ -6,7 +6,7 @@
  * @package wp-graphql-acf
  */
 
-namespace WPGraphQL\ACF\Mutations;
+namespace Zngly\ACFM;
 
 use WPGraphQL\Utils\Utils;
 use WPGraphQL\ACF\LocationRules;

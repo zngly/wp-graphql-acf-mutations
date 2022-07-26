@@ -77,10 +77,10 @@
     "scripts": {
         "install": "composer install --no-dev",
         "install:dev": [
-            "Zngly\\ACF\\Scripts\\Install::run"
+            "Zngly\\ACFM\\Scripts\\Install::run"
         ],
         "watch": [
-            "Zngly\\ACF\\Scripts\\Watcher::run"
+            "Zngly\\ACFM\\Scripts\\Watcher::run"
         ]
     }
 }

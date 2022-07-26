@@ -6,10 +6,14 @@
  * @package wp-graphql-acf
  */
 
-namespace WPGraphQL\ACF\Mutations;
+namespace Zngly\ACFM;
 
+use GraphQL\Type\Definition\ResolveInfo;
 use WP_Post_Type;
+use WP_Taxonomy;
+use WPGraphQL\AppContext;
 use WPGraphQL\Utils\Utils as WpGraphqlUtils;
+use Zngly\ACFM\Utils as ZnglyUtils;
 
 // add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
 //     if ($post_type_object->name === "my_post_type") {
@@ -40,6 +44,22 @@ class Mutations
             $this->config = new Config();
             $this->post_object_mutation_action($media_item_id, $input, $post_type_object);
         }, 10, 3);
+
+        // add_filter('graphql_term_object_insert_term_args', function (array $insert_args, array $input, WP_Taxonomy $taxonomy, string $mutation_name) {
+
+        //     $tets = 'asdf;klj';
+        // }, 10, 4);
+
+        // add_action('graphql_update_term', function (int $term_id, WP_Taxonomy $taxonomy, array $args, string $mutation_name, AppContext $context, ResolveInfo $info) {
+        //     $test = 'test';
+
+        //     $post_type_object = new WP_Post_Type('');
+        //     $post_type_object->graphql_single_name = $taxonomy->name;
+
+        //     $this->config = new Config();
+        //     // $this->post_object_mutation_action($term_id, $args, $post_type_object);
+
+        // }, 10, 6);
     }
 
     /**
@@ -129,49 +149,22 @@ class Mutations
             }
     }
 
-    public static function mapPostIdsFromGids($gids)
-    {
-        if (is_array($gids)) {
-            $ids = [];
-            foreach ($gids as $gid) {
-                $ids[] = WpGraphqlUtils::get_database_id_from_id($gid);
-            }
-            return $ids;
-        } else {
-            return WpGraphqlUtils::get_database_id_from_id($gids);
-        }
-    }
+
 
     public static function updateField($post_id, $value, $field_name, $field_type)
     {
         // if file types are images or file, make sure an ID is passed
         // accept guid or ids
         if (in_array($field_type, ['image', 'file']))
-            $value = self::mapPostIdsFromGids($value);
+            $value = ZnglyUtils::mapPostIdsFromGids($value);
 
         // accept guid or ids
         if ($field_type === 'post_object')
-            $value = self::mapPostIdsFromGids($value);
+            $value = ZnglyUtils::mapPostIdsFromGids($value);
 
         /**
          * update a standalone acf field
          */
         update_post_meta($post_id, $field_name, $value);
-    }
-
-
-    public static function getPostIdsFromGids($gids)
-    {
-        $postIds = [];
-        foreach ($gids as $gid) {
-            $postIds[] = WpGraphqlUtils::get_database_id_from_id($gid);
-        }
-
-        return $postIds;
-    }
-
-    public static function getPostIdFromGid($gids)
-    {
-        return WpGraphqlUtils::get_database_id_from_id($gids);
     }
 }
