@@ -6,8 +6,6 @@ use WPGraphQL\Utils\Utils as WpGraphqlUtils;
 
 class Utils
 {
-
-
     public static function mapPostIdsFromGids($gids)
     {
         if (is_array($gids)) {

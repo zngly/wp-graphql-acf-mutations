@@ -10,6 +10,11 @@ use Zngly\ACFM\Tests\Graphql;
 final class TaxonomyTest extends TestCase
 {
 
+    /**
+     * create a parent class which has a setup function 
+     * that logs in and resets the database to a clean state
+     */
+
     public $gql;
 
     protected function setUp(): void
