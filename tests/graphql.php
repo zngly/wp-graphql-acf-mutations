@@ -86,3 +86,23 @@ class Graphql
         }
     }
 }
+
+
+// (async () =>
+// 	(
+// 		await fetch(' https://localhost:80/wp-graphql-acf-mutations/wordpress/graphql', {
+// 			method: 'POST',
+// 			headers: {
+// 				'Content-Type': 'application/json',
+// 				Accept: 'application/json',
+// 				'Access-Control-Allow-Origin': '*',
+// 			},
+// 			body: JSON.stringify({
+// 				query: ` mutation Login {
+//             login(input: {username: "api", password: "vLmDecjmp&L][qgwipjqb34)ZTmMQhUOuT2@8ESUkql:&£aojAF0a87JhawJmCiFKxkP0Kf3aTI$5vJ8xVkBpaQuZKu"}) {
+//               authToken
+//             }
+//           }`,
+// 			}),
+// 		})
+// 	).json())();
