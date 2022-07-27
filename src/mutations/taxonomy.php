@@ -32,7 +32,6 @@ class Taxonomy
                         foreach ($field_group['fields'] as $acf_field) {
                             $acf_graphql_name = $acf_field['graphql_name'];
 
-
                             if (isset($input[$acf_graphql_name]))
                                 $insert_args[$acf_graphql_name] = $input[$acf_graphql_name];
                         }
