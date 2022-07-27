@@ -2,7 +2,6 @@
 
 namespace Zngly\ACFM\Mutations;
 
-use Zngly\ACFM\Config;
 use Zngly\ACFM\Mutations;
 
 class MediaItem

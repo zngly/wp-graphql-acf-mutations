@@ -4,7 +4,6 @@
 namespace Zngly\ACFM\Mutations;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use WP_Post_Type;
 use WP_Taxonomy;
 use WPGraphQL\AppContext;
 use Zngly\ACFM\Config;

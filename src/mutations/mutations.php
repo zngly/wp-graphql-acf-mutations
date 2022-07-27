@@ -6,7 +6,6 @@ use Zngly\ACFM\Mutations\PostObject;
 use Zngly\ACFM\Mutations\MediaItem;
 use Zngly\ACFM\Mutations\Taxonomy;
 
-use WP_Post_Type;
 use Zngly\ACFM\Utils as ACFMUtils;
 
 // add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
