@@ -4,6 +4,8 @@ namespace Zngly\ACFM\Dev;
 
 require_once __DIR__ . '/acf/acf.php';
 
+define('GRAPHQL_JWT_AUTH_SECRET_KEY', 'vSoj)4k%[_10`%|/3l^M5AB XIzrIN=A]Z%4=9?+3D-F<E6(75U@yp(*e)Ckfi5`');
+
 class Init
 {
 
@@ -13,7 +15,13 @@ class Init
             Init::welcome_message();
             Init::plugins();
             Init::introspection();
+            Init::jwt_auth();
+            Init::cors();
         }, 1);
+
+        add_action('init', function () {
+            Init::cors();
+        });
     }
 
     public static function welcome_message()
@@ -47,5 +55,26 @@ class Init
             if ($option_name === 'debug_mode_enabled')
                 return 'on';
         }, 10, 5);
+    }
+
+    public static function jwt_auth()
+    {
+        // check if there is a user with the role of "api" and name of "api"
+        $user = get_user_by('login', 'api');
+        if (!$user) {
+            $new_user_id = wp_create_user('api', 'vLmDecjmp&L][qgwipjqb34)ZTmMQhUOuT2@8ESUkql:&£aojAF0a87JhawJmCiFKxkP0Kf3aTI$5vJ8xVkBpaQuZKu', '');
+            $new_user = get_user_by('id', $new_user_id);
+            $new_user->set_role('administrator');
+        }
+
+        add_filter('graphql_jwt_auth_expire', function ($expiration) {
+            return 60 * 10;
+        }, 10, 1);
+    }
+
+    public static function cors()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
     }
 }

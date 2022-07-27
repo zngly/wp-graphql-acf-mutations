@@ -59,15 +59,19 @@
         "wp-graphql/wp-graphql": "^1.8",
         "wp-graphql/wp-graphql-acf": "^0.5.3",
         "wordpress-plugin/advanced-custom-fields-pro": "^5.9",
+        "wp-graphql/wp-graphql-jwt-authentication": "^0.4.1",
         "wpackagist-theme/twentytwentytwo": "*",
         "spatie/file-system-watcher": "^1.1",
-        "phpunit/phpunit": "^9"
+        "phpunit/phpunit": "^9",
+        "vlucas/phpdotenv": "^5.4",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "autoload-dev": {
         "classmap": [
             "src/",
             "scripts/",
-            "dev/"
+            "dev/",
+            "tests/"
         ]
     },
     "autoload": {
@@ -83,6 +87,6 @@
         "watch": [
             "Zngly\\ACFM\\Scripts\\Watcher::run"
         ],
-        "test": "./wordpress/vendor/bin/phpunit --bootstrap ./wordpress/vendor/autoload.php --verbose tests"
+        "test": "./wordpress/vendor/bin/phpunit --bootstrap ./wordpress/vendor/autoload.php tests --verbose"
     }
 }
