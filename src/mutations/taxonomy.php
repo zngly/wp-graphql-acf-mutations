@@ -25,20 +25,6 @@ class Taxonomy
 
             $config = new Config();
 
-            // find if this acf location is permitted
-            $is_correct_location = false;
-            foreach ($config->location_rules as $fields) {
-                foreach ($fields as $field) {
-                    if ($field === $taxonomy->labels->singular_name) {
-                        $is_correct_location = true;
-                    }
-                }
-            }
-
-            // exit if we cannot update this location
-            if (!$is_correct_location)
-                return $insert_args;
-
             // loop through all the acf field groups and find the one that matches the taxonomy name
             foreach ($config->field_groups as $field_group) {
                 foreach ($field_group['graphql_types'] as $graphql_type) {
