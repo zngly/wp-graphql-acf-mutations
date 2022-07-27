@@ -6,7 +6,7 @@
  * @package wp-graphql-acf
  */
 
-namespace WPGraphQL\ACF\Mutations;
+namespace Zngly\ACFM;
 
 // add_filter('graphql_input_fields', function ($fields, $type_name) {
 //     if ($type_name === "CreateMyCustomInput")
@@ -16,10 +16,10 @@ namespace WPGraphQL\ACF\Mutations;
 //     return $fields;
 // }, 10, 2);
 /**
- * Inputs class.
+ * RegisterInputs class.
  * Maps the above comment to acf fields
  */
-class Inputs
+class RegisterInputs
 {
     /**
      * @var Config <string> List of field groups and fields
@@ -59,10 +59,11 @@ class Inputs
             foreach ($field_group['graphql_types'] as $graphql_type)
                 if (in_array($type_name, ["Create{$graphql_type}Input", "Update{$graphql_type}Input"]))
                     foreach ($field_group['fields'] as $field) {
+
+                        // check if there is a custom strict type set, otherwise we infer it
                         if (isset($field['strict_graphql_type']) && $field['strict_graphql_type'] != "")
                             $type = $field['strict_graphql_type'];
-                        else
-                            $type = $this->config->get_acf_type($graphql_type, $field, $field_group);
+                        else $type = $this->config->get_acf_type($graphql_type, $field, $field_group);
 
                         if ($type == null)
                             continue;

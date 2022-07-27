@@ -11,16 +11,17 @@
  * @package         WPGraphQL_ACF_Mutations
  */
 
-namespace WPGraphQL\ACF\Mutations;
+namespace Zngly\ACFM;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-require_once(__DIR__ . '/src/config.php');
-require_once(__DIR__ . '/src/inputs.php');
-require_once(__DIR__ . '/src/mutations.php');
-require_once(__DIR__ . '/src/register.php');
+/**
+ * Define constants
+ */
+const WPGRAPHQL_REQUIRED_MIN_VERSION = '0.4.0';
+const WPGRAPHQL_ACF_VERSION = '0.5.3';
 
 /**
  * Initialize the plugin
@@ -32,20 +33,22 @@ function init()
     /**
      * If either ACF or WPGraphQL are not active, show the admin notice and bail
      */
-    if (!can_load_plugin())
+    if (!can_load_plugin()) {
+        // Show the admin notice
+        add_action('admin_init', __NAMESPACE__ . '\show_admin_notice');
         return;
-
-    // register acf input types
-    new RegisterInputs();
+    }
+    // register acf input types such as groups
+    new RegisterTypes();
 
     // run the inputs filtering
-    new Inputs();
+    new RegisterInputs();
 
     // run the post object actions
-    new Mutations();
+    Mutations::registerMutations();
 }
 
-add_action('init', '\WPGraphQL\ACF\Mutations\init');
+add_action('init', '\Zngly\ACFM\init');
 
 /**
  * Check whether ACF and WPGraphQL are active, and whether the minimum version requirement has been
@@ -69,4 +72,32 @@ function can_load_plugin()
         return false;
 
     return true;
+}
+
+/**
+ * Show admin notice to admins if this plugin is active but either ACF and/or WPGraphQL
+ * are not active
+ *
+ * @return bool
+ */
+function show_admin_notice()
+{
+
+    /**
+     * For users with lower capabilities, don't show the notice
+     */
+    if (!current_user_can('manage_options')) {
+        return false;
+    }
+
+    add_action(
+        'admin_notices',
+        function () {
+?>
+        <div class="error notice">
+            <p><?php esc_html_e(sprintf('Both WPGraphQL (v%s+) and Advanced Custom Fields (v5.7+) must be active for "wp-graphql-acf" to work', WPGRAPHQL_REQUIRED_MIN_VERSION), 'wp-graphiql-acf'); ?></p>
+        </div>
+<?php
+        }
+    );
 }

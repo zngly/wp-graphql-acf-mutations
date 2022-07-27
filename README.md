@@ -23,10 +23,9 @@ If an acf type needs a specific graphql type such as a custom enum then specify
 
 ![image](https://user-images.githubusercontent.com/87081580/180242118-a887435c-d665-44aa-b569-c50cc27542c6.png)
 
-
 ### Limitations
 
-Currently the mutations will not be set for objects with more than one child deep.
+Currently the mutations will not be set for objects nested with more than one child deep.
 
 ### Dev Usage
 
@@ -40,4 +39,3 @@ Currently the mutations will not be set for objects with more than one child dee
 
 -   goto your wordpress installation in your localhost browser
 -   finish the wordpress installation
--   activate all plugins

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zngly\ACF\Scripts;
+namespace Zngly\ACFM\Scripts;
 
 class Utils
 {
@@ -64,12 +64,17 @@ class Utils
 
     public static function copy_plugin()
     {
+
         // get the directory to watch
-        $src_folder = dirname(dirname(__FILE__)) . '/src';
+        $src_folder = self::get_root_dir() . '/src';
 
         // get all the files in the directory recursively
         $plugin_name = self::get_plugin_name();
         $plugin_folder = self::get_root_dir() . "/wordpress/wp-content/plugins/{$plugin_name}";
+
+        // delete the old plugin if it exists
+        if (is_dir($plugin_folder))
+            self::delete_dir($plugin_folder);
 
         // if the plugin folder doesn't exist, create it
         if (!file_exists("{$plugin_folder}"))
@@ -111,16 +116,16 @@ class Utils
 
     public static function get_root_dir()
     {
-        return dirname(dirname(__FILE__));
+        return self::format_path(dirname(dirname(__FILE__)));
     }
 
     public static function get_root_name()
     {
-        return basename(dirname(dirname(__FILE__)));
+        return self::format_path(basename(dirname(dirname(__FILE__))));
     }
 
     public static function get_plugin_name()
     {
-        return basename(dirname(dirname(__FILE__)));
+        return self::format_path(basename(dirname(dirname(__FILE__))));
     }
 }

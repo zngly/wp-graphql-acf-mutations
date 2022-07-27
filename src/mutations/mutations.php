@@ -1,15 +1,12 @@
 <?php
 
-/**
- * Config for WPGraphQL ACF
- *
- * @package wp-graphql-acf
- */
+namespace Zngly\ACFM;
 
-namespace WPGraphQL\ACF\Mutations;
+use Zngly\ACFM\Mutations\PostObject;
+use Zngly\ACFM\Mutations\MediaItem;
+use Zngly\ACFM\Mutations\Taxonomy;
 
-use WP_Post_Type;
-use WPGraphQL\Utils\Utils as WpGraphqlUtils;
+use Zngly\ACFM\Utils as ACFMUtils;
 
 // add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
 //     if ($post_type_object->name === "my_post_type") {
@@ -20,26 +17,15 @@ use WPGraphQL\Utils\Utils as WpGraphqlUtils;
 /**
  * Mutations class.
  * Maps the above comment to acf fields
-
  */
+
 class Mutations
 {
-    /**
-     * @var Config <string> List of field groups and fields
-     */
-    protected $config;
-
-    public function __construct()
+    public static function registerMutations()
     {
-        add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
-            $this->config = new Config();
-            $this->post_object_mutation_action($post_id, $input, $post_type_object);
-        }, 10, 3);
-
-        add_action('graphql_media_item_mutation_update_additional_data', function ($media_item_id, $input, $post_type_object) {
-            $this->config = new Config();
-            $this->post_object_mutation_action($media_item_id, $input, $post_type_object);
-        }, 10, 3);
+        new MediaItem();
+        new PostObject();
+        new Taxonomy();
     }
 
     /**
@@ -47,11 +33,12 @@ class Mutations
      * @todo: refactor code so that it can recursively update nested fields
      * @todo: delete acf metadate if the value is null
      */
-    protected function post_object_mutation_action($post_id, $input, WP_Post_Type $post_type_object)
+    public static function updater(string|int $post_id, array $input, string $type_name)
     {
-        $type_name = ucfirst($post_type_object->graphql_single_name);
+        $config = new Config();
+        $type_name = ucfirst($type_name);
 
-        foreach ($this->config->field_groups as $field_group)
+        foreach ($config->field_groups as $field_group)
             foreach ($field_group['graphql_types'] as $graphql_type) {
                 if ($type_name === $graphql_type) {
                     foreach ($field_group['fields'] as $field) {
@@ -62,13 +49,13 @@ class Mutations
                             // group update
                             if ($field['type'] === 'group') {
                                 foreach ($field['sub_fields'] as $sub_field) {
-                                    $graphql_name = $this->config::camel_case($sub_field['name']);
+                                    $graphql_name = $config::camel_case($sub_field['name']);
 
                                     if (isset($input[$field['graphql_name']][$graphql_name]) && $field['type'] === 'group') {
                                         $field_name = $field['name'] . "_" . $sub_field['name'];
                                         $value = $input[$field['graphql_name']][$graphql_name];
 
-                                        self::updateField($post_id, $value, $field_name, $sub_field['type']);
+                                        self::update_single_field($post_id, $value, $field_name, $sub_field['type'], $type_name);
                                     }
                                 }
                             }
@@ -85,7 +72,7 @@ class Mutations
 
                                     foreach ($acf_field_values as $acf_key => $acf_value) {
                                         foreach ($field['sub_fields'] as $sub_field) {
-                                            $graphql_name = $this->config::camel_case($sub_field['name']);
+                                            $graphql_name = $config::camel_case($sub_field['name']);
 
                                             if (isset($acf_field_values[$acf_key][$graphql_name])) {
                                                 $key = $field['name'] . "_" . $acf_key . "_" . $sub_field['name'];
@@ -102,7 +89,7 @@ class Mutations
                                 // set repeater fields
                                 foreach ($input[$field['graphql_name']] as $r_key => $r_value) {
                                     foreach ($field['sub_fields'] as $sub_field) {
-                                        $graphql_name = $this->config::camel_case($sub_field['name']);
+                                        $graphql_name = $config::camel_case($sub_field['name']);
 
                                         if (isset($r_value[$graphql_name])) {
                                             $post_key = $field['name'] . "_" . $r_key . "_" . $sub_field['name'];
@@ -123,55 +110,42 @@ class Mutations
 
                         // check if the field exists
                         if (isset($input[$field['graphql_name']]))
-                            self::updateField($post_id, $input[$field['graphql_name']], $field['name'], $field['type']);
+                            self::update_single_field($post_id, $input[$field['graphql_name']], $field['name'], $field['type'], $type_name);
                     }
                 }
             }
     }
 
-    public static function mapPostIdsFromGids($gids)
-    {
-        if (is_array($gids)) {
-            $ids = [];
-            foreach ($gids as $gid) {
-                $ids[] = WpGraphqlUtils::get_database_id_from_id($gid);
-            }
-            return $ids;
-        } else {
-            return WpGraphqlUtils::get_database_id_from_id($gids);
-        }
-    }
 
-    public static function updateField($post_id, $value, $field_name, $field_type)
+
+    public static function update_single_field($id, $value, $field_name, $field_type, $type_name)
     {
         // if file types are images or file, make sure an ID is passed
         // accept guid or ids
         if (in_array($field_type, ['image', 'file']))
-            $value = self::mapPostIdsFromGids($value);
+            $value = ACFMUtils::mapPostIdsFromGids($value);
 
         // accept guid or ids
         if ($field_type === 'post_object')
-            $value = self::mapPostIdsFromGids($value);
+            $value = ACFMUtils::mapPostIdsFromGids($value);
 
-        /**
-         * update a standalone acf field
-         */
-        update_post_meta($post_id, $field_name, $value);
-    }
+        // @todo: add filter to custom post types
+        $custom_post_types = ["Category", "Tag", "Option", "Options"];
+        if (in_array($type_name, $custom_post_types)) {
+            $post_id = strtolower($type_name . '_' . $id); // https://www.advancedcustomfields.com/resources/update_field/
 
-
-    public static function getPostIdsFromGids($gids)
-    {
-        $postIds = [];
-        foreach ($gids as $gid) {
-            $postIds[] = WpGraphqlUtils::get_database_id_from_id($gid);
+            if (self::should_update($value)) update_field($field_name, $value, $post_id);
+            else delete_field($field_name, $post_id);
+        } else {
+            if (self::should_update($value)) update_field($field_name, $value, $id);
+            else delete_field($field_name, $id);
         }
-
-        return $postIds;
     }
 
-    public static function getPostIdFromGid($gids)
+    public static function should_update($value)
     {
-        return WpGraphqlUtils::get_database_id_from_id($gids);
+        if ($value === "") return false;
+
+        return true;
     }
 }

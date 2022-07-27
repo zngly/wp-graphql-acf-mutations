@@ -1,12 +1,10 @@
-<phpunit 	bootstrap="vendor/autoload.php"			
-			colors="true"
-			convertErrorsToExceptions="true"
-			convertNoticesToExceptions="true"
-			convertWarningsToExceptions="true"
-			stopOnFailure="true">
-			<testsuites>
-				<testsuite name="Unit Tests">
-					<directory>tests</directory>
-				</testsuite>
-			</testsuites>
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="wordpress/vendor/autoload.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnFailure="true">
+	<testsuites>
+		<testsuite name="Zngly ACFM Tests">
+			<directory>
+				tests
+			</directory>
+		</testsuite>
+	</testsuites>
 </phpunit>

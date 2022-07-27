@@ -1,5 +1,5 @@
 {
-    "version": "1.0.12",
+    "version": "1.1.0",
     "name": "zngly/wp-graphql-acf-mutations",
     "description": "ACF Mutations for WP GraphQL",
     "homepage": "https://github.com/zngly/wp-graphql-acf-mutations",
@@ -59,14 +59,19 @@
         "wp-graphql/wp-graphql": "^1.8",
         "wp-graphql/wp-graphql-acf": "^0.5.3",
         "wordpress-plugin/advanced-custom-fields-pro": "^5.9",
+        "wp-graphql/wp-graphql-jwt-authentication": "^0.4.1",
         "wpackagist-theme/twentytwentytwo": "*",
-        "spatie/file-system-watcher": "^1.1"
+        "spatie/file-system-watcher": "^1.1",
+        "phpunit/phpunit": "^9",
+        "vlucas/phpdotenv": "^5.4",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "autoload-dev": {
         "classmap": [
             "src/",
             "scripts/",
-            "dev/"
+            "dev/",
+            "tests/"
         ]
     },
     "autoload": {
@@ -77,10 +82,11 @@
     "scripts": {
         "install": "composer install --no-dev",
         "install:dev": [
-            "Zngly\\ACF\\Scripts\\Install::run"
+            "Zngly\\ACFM\\Scripts\\Install::run"
         ],
         "watch": [
-            "Zngly\\ACF\\Scripts\\Watcher::run"
-        ]
+            "Zngly\\ACFM\\Scripts\\Watcher::run"
+        ],
+        "test": "./wordpress/vendor/bin/phpunit --bootstrap ./wordpress/vendor/autoload.php tests --verbose"
     }
 }

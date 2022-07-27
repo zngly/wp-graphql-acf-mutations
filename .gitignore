@@ -12,3 +12,6 @@ wordpress
 
 node_modules
 package-lock.json
+
+.phpunit.result.cache
+.env

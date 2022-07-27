@@ -1,6 +1,6 @@
 <?php
 
-namespace Zngly\ACF\Scripts;
+namespace Zngly\ACFM\Scripts;
 
 require dirname(dirname(__FILE__)) . '/wordpress/vendor/autoload.php';
 
@@ -13,8 +13,11 @@ class Watcher
 
     public static function run()
     {
+        Utils::copy_plugin();
+        self::autoload_update();
+
         // get the directory to watch
-        $src_folder = dirname(dirname(__FILE__)) . '/src';
+        $src_folder = Utils::get_root_dir() . '/src';
 
         // get all the files in the directory recursively
         $plugin_name = Utils::get_plugin_name();
@@ -30,6 +33,8 @@ class Watcher
         $root_dir = Utils::get_root_dir();
         $plugins_folder = Utils::format_path($root_dir . "/wordpress/wp-content/plugins/" . Utils::get_plugin_name());
 
+        echo "\n\nWatching Zngly\ACFM...\n\n";
+
         Watch::paths(...$dirs)
             ->onAnyChange(function (string $type, string $path) use ($root_dir, $plugins_folder) {
                 // format path forwardslashes
@@ -39,28 +44,40 @@ class Watcher
                 $path_parts = explode($root_dir, $path);
                 $new_path = $plugins_folder . $path_parts[1];
 
-                echo "{$type}: {$path}\n";
+                echo "{$type}: {$new_path}\n";
 
                 switch ($type) {
                     case Watch::EVENT_TYPE_DIRECTORY_CREATED:
                         mkdir($new_path, 0777, true);
                         break;
                     case Watch::EVENT_TYPE_DIRECTORY_DELETED:
-                        rmdir($new_path);
+                        if (is_dir($new_path))
+                            rmdir($new_path);
                         break;
                     case Watch::EVENT_TYPE_FILE_DELETED:
-                        unlink($new_path);
+                        if (file_exists($new_path))
+                            unlink($new_path);
                         break;
                     case Watch::EVENT_TYPE_FILE_CREATED:
                     case Watch::EVENT_TYPE_FILE_UPDATED:
                         copy($path, $new_path);
                         break;
-
                     default:
-                        echo "Event Happened: {$type} - from {$path} - to {$new_path}\n";
+                        echo "Event Happened but no action taken: {$type} - from {$path} - to {$new_path}\n";
                         break;
                 }
             })
             ->start();
+    }
+
+    public static function autoload_update()
+    {
+        $root_dir = Utils::get_root_dir();
+
+        // run composer dump autoload
+        $command = "cd {$root_dir} && composer dump-autoload -o";
+        echo "running: " . $command . "\n";
+        $output = shell_exec($command);
+        echo $output;
     }
 }
