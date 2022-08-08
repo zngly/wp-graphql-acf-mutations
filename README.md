@@ -6,7 +6,7 @@ Wordpress plugin which add mutations to ACF Fields
 
 ### Install
 
-https://packagist.org/packages/zngly/wp-graphql-acf-mutations
+<https://packagist.org/packages/zngly/wp-graphql-acf-mutations>
 
 `composer require zngly/wp-graphql-acf-mutations`
 
@@ -26,6 +26,14 @@ If an acf type needs a specific graphql type such as a custom enum then specify
 ### Limitations
 
 Currently the mutations will not be set for objects nested with more than one child deep.
+
+### Zip Install
+
+1. Download the [Latest Release](https://github.com/zngly/wp-graphql-acf-mutations/releases)
+2. Extract the contents of the zip file into a folder `wp-graphql-acf-mutations`
+3. Place the `wp-graphql-acf-mutations` folder in your `wp-content/plugins` folder
+4. From `wp-content/plugins/wp-graphql-acf-mutations` directory run `composer install:prod`
+5. Activate the plugin
 
 ### Dev Usage
 

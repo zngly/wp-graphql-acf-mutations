@@ -80,7 +80,7 @@
         ]
     },
     "scripts": {
-        "install": "composer install --no-dev",
+        "install:prod": "composer install --no-dev",
         "install:dev": [
             "Zngly\\ACFM\\Scripts\\Install::run"
         ],
