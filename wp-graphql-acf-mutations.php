@@ -5,7 +5,7 @@
  * Description:       Adds Advanced Custom Fields Mutations to the WPGraphQL Schema
  * Author:            Vlad-Anton Medves
  * Text Domain:       wp-graphql-acf
- * Version:           1.0.5
+ * Version:           v1.1.1
  * Requires PHP:      7.0
  *
  * @package         WPGraphQL_ACF_Mutations
@@ -15,6 +15,28 @@ namespace Zngly\ACFM;
 
 if (!defined('ABSPATH')) {
     exit;
+}
+
+// if namespace Zngly\ACFM is not defined
+if (!class_exists('Zngly\\ACFM\\Mutations')) {
+    // require the autoloader in wordpress/vendor/autoload.php
+    // if the autoloader is not found, exit with an error message
+    if (!file_exists(__DIR__ . '/wordpress/vendor/autoload.php')) {
+        wp_die(
+            "
+            <samp>
+                Error: Could not load WPGraphQL ACF Mutations. Please install the WPGraphQL ACF Mutations plugin via Composer.
+            </samp>
+            <br>
+            <br>
+            <code>
+                composer install:prod
+            </code>
+            "
+        );
+    }
+
+    require_once __DIR__ . '/wordpress/vendor/autoload.php';
 }
 
 /**

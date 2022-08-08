@@ -19,12 +19,12 @@ class Watcher
         // get the directory to watch
         $src_folder = Utils::get_root_dir() . '/src';
 
-        // get all the files in the directory recursively
+        // get all the path to the main plugin file
         $plugin_name = Utils::get_plugin_name();
-        $plugin_folder = Utils::get_root_dir() . "/wordpress/wp-content/plugins/{$plugin_name}";
+        $main_plugin_file = Utils::get_root_dir() . "/{$plugin_name}.php";
 
         // watch for any file changes in the directory
-        self::watch_dirs([$src_folder,  "{$plugin_folder}/{$plugin_name}.php"]);
+        self::watch_dirs([$src_folder,  $main_plugin_file]);
     }
 
     // function to watch a directory for changes

@@ -1,5 +1,5 @@
 {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "name": "zngly/wp-graphql-acf-mutations",
     "description": "ACF Mutations for WP GraphQL",
     "homepage": "https://github.com/zngly/wp-graphql-acf-mutations",
@@ -80,7 +80,7 @@
         ]
     },
     "scripts": {
-        "install": "composer install --no-dev",
+        "install:prod": "composer install --no-dev",
         "install:dev": [
             "Zngly\\ACFM\\Scripts\\Install::run"
         ],
