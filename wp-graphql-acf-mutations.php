@@ -18,10 +18,10 @@ if (!defined('ABSPATH')) {
 }
 
 // if namespace Zngly\ACFM is not defined
-if (!defined('ZNGLY_ACFM_NS')) {
+if (!class_exists('Zngly\\ACFM\\Mutations')) {
     // require the autoloader in wordpress/vendor/autoload.php
     // if the autoloader is not found, exit with an error message
-    if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    if (!file_exists(__DIR__ . '/wordpress/vendor/autoload.php')) {
         wp_die(
             "
             <samp>
@@ -36,7 +36,7 @@ if (!defined('ZNGLY_ACFM_NS')) {
         );
     }
 
-    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/wordpress/vendor/autoload.php';
 }
 
 /**
