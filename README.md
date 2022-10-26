@@ -1,8 +1,12 @@
 [![Latest Stable Version](http://poser.pugx.org/zngly/wp-graphql-acf-mutations/v)](https://packagist.org/packages/zngly/wp-graphql-acf-mutations) [![Total Downloads](http://poser.pugx.org/zngly/wp-graphql-acf-mutations/downloads)](https://packagist.org/packages/zngly/wp-graphql-acf-mutations) [![Latest Unstable Version](http://poser.pugx.org/zngly/wp-graphql-acf-mutations/v/unstable)](https://packagist.org/packages/zngly/wp-graphql-acf-mutations) [![License](http://poser.pugx.org/zngly/wp-graphql-acf-mutations/license)](https://packagist.org/packages/zngly/wp-graphql-acf-mutations) [![PHP Version Require](http://poser.pugx.org/zngly/wp-graphql-acf-mutations/require/php)](https://packagist.org/packages/zngly/wp-graphql-acf-mutations)
 
-## Zngly - WpGraphql ACF Mutations
+## Zngly - WpGraphql ACF Mutations (Beta)
 
 Wordpress plugin which add mutations to ACF Fields
+
+### Note
+
+This plugin is still in active development. It is currently being used internally at Zngly.
 
 ### Install
 
