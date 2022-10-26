@@ -1,12 +1,9 @@
 <?php
 
-namespace Zngly\ACFM;
-
-use Zngly\ACFM\Mutations\PostObject;
-use Zngly\ACFM\Mutations\MediaItem;
-use Zngly\ACFM\Mutations\Taxonomy;
+namespace Zngly\ACFM\Mutations;
 
 use Zngly\ACFM\Utils as ACFMUtils;
+use Zngly\ACFM\Config;
 
 // add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
 //     if ($post_type_object->name === "my_post_type") {
@@ -21,7 +18,7 @@ use Zngly\ACFM\Utils as ACFMUtils;
 
 class Mutations
 {
-    public static function registerMutations()
+    public function __construct()
     {
         new MediaItem();
         new PostObject();
@@ -33,7 +30,7 @@ class Mutations
      * @todo: refactor code so that it can recursively update nested fields
      * @todo: delete acf metadate if the value is null
      */
-    public static function updater(string|int $post_id, array $input, string $type_name)
+    protected function updater(string|int $post_id, array $input, string $type_name)
     {
         $config = new Config();
         $type_name = ucfirst($type_name);
@@ -55,7 +52,7 @@ class Mutations
                                         $field_name = $field['name'] . "_" . $sub_field['name'];
                                         $value = $input[$field['graphql_name']][$graphql_name];
 
-                                        self::update_single_field($post_id, $value, $field_name, $sub_field['type'], $type_name);
+                                        $this->update_single_field($post_id, $value, $field_name, $sub_field['type'], $type_name);
                                     }
                                 }
                             }
@@ -110,7 +107,7 @@ class Mutations
 
                         // check if the field exists
                         if (isset($input[$field['graphql_name']]))
-                            self::update_single_field($post_id, $input[$field['graphql_name']], $field['name'], $field['type'], $type_name);
+                            $this->update_single_field($post_id, $input[$field['graphql_name']], $field['name'], $field['type'], $type_name);
                     }
                 }
             }
@@ -118,7 +115,7 @@ class Mutations
 
 
 
-    public static function update_single_field($id, $value, $field_name, $field_type, $type_name)
+    private function update_single_field($id, $value, $field_name, $field_type, $type_name)
     {
         // if file types are images or file, make sure an ID is passed
         // accept guid or ids
@@ -134,15 +131,15 @@ class Mutations
         if (in_array($type_name, $custom_post_types)) {
             $post_id = strtolower($type_name . '_' . $id); // https://www.advancedcustomfields.com/resources/update_field/
 
-            if (self::should_update($value)) update_field($field_name, $value, $post_id);
+            if ($this->should_update($value)) update_field($field_name, $value, $post_id);
             else delete_field($field_name, $post_id);
         } else {
-            if (self::should_update($value)) update_field($field_name, $value, $id);
+            if ($this->should_update($value)) update_field($field_name, $value, $id);
             else delete_field($field_name, $id);
         }
     }
 
-    public static function should_update($value)
+    private function should_update($value)
     {
         if ($value === "") return false;
 

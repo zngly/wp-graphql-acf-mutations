@@ -1,12 +1,8 @@
 <?php
 
-/**
- * Config for WPGraphQL ACF
- *
- * @package wp-graphql-acf
- */
+namespace Zngly\ACFM\Register;
 
-namespace Zngly\ACFM;
+use Zngly\ACFM\Config;
 
 // add_filter('graphql_input_fields', function ($fields, $type_name) {
 //     if ($type_name === "CreateMyCustomInput")
@@ -16,10 +12,10 @@ namespace Zngly\ACFM;
 //     return $fields;
 // }, 10, 2);
 /**
- * RegisterInputs class.
+ * CustomInputs class.
  * Maps the above comment to acf fields
  */
-class RegisterInputs
+class CustomInputs
 {
     /**
      * @var Config <string> List of field groups and fields
@@ -29,20 +25,17 @@ class RegisterInputs
     /**
      * @var array
      */
-    protected $input_fields;  // <array> List of mutation input fields
+    private $input_fields;  // <array> List of mutation input fields
 
     public function __construct()
     {
         add_filter('graphql_input_fields', function ($input_fields, $type) {
             /**
-             * Set the config, this gives us access to the field groups
-             */
-            $this->config = new Config();
-
-            /**
              * Set the fields as class variables
              */
             $this->input_fields = $input_fields;
+
+            $this->config = new Config();
 
             /**
              * Register input fields

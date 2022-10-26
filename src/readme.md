@@ -5,7 +5,7 @@
 -   Gets the acf information and formats it in a usable format.
 -   Decides what graphql type an acf field type is. e.g. postObject -> ID
 
-#### registerInputs.php
+#### CustomInputs.php
 
 -   Registers the acf field inputs to the graphql type registry. This is how the acf field inputs show up in the graphql schema.
 

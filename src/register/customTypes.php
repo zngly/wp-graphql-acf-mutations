@@ -1,19 +1,11 @@
 <?php
 
-/**
- * Config for WPGraphQL ACF
- *
- * @package wp-graphql-acf
- */
+namespace Zngly\ACFM\Register;
 
-namespace Zngly\ACFM;
+use WPGraphQL\Type\WPObjectType;
+use Zngly\ACFM\Config;
 
-use WPGraphQL\Registry\TypeRegistry;
-
-/**
- * RegisterTypes class.
- */
-class RegisterTypes
+class CustomTypes
 {
     /**
      * @var TypeRegistry
@@ -25,14 +17,12 @@ class RegisterTypes
      */
     protected $config;
 
-
     // constructor
     public function __construct()
     {
-        add_action('graphql_register_types', function (TypeRegistry $type_registry) {
-            /**
-             * Set the type registry
-             */
+
+        add_action("graphql_register_types", function ($type_registry) {
+
             $this->type_registry = $type_registry;
 
             /**
@@ -43,19 +33,20 @@ class RegisterTypes
             /**
              * Register input fields
              */
-            $this->register_input_types();
-        }, 10, 1);
+            $this->register_custom_input_types();
+        }, 10, 2);
     }
+
     /**
      * Registers input types
      */
-    protected function register_input_types()
+    private function register_custom_input_types()
     {
         foreach ($this->config->field_groups as $field_group)
             if (count($field_group['graphql_types']) > 0)
                 foreach ($field_group['graphql_types'] as $graphql_type)
                     foreach ($field_group['fields'] as $field)
-                        $this->register_input_type($graphql_type, $field, $field_group);
+                        $this->register_custom_input_type($graphql_type, $field, $field_group);
     }
 
     /**
@@ -63,18 +54,14 @@ class RegisterTypes
      * register a single sub field input. 
      * only need to register group and repeater fields types
      */
-    protected function register_input_type(string $type_name, array $config, array $field_group)
+    private function register_custom_input_type(string $type_name, array $config, array $field_group)
     {
         $acf_type  = isset($config['type']) ? $config['type'] : null;
 
-        if (empty($acf_type))
-            return;
-
-        if (!($acf_type == 'group' || $acf_type == 'repeater'))
-            return;
+        if (empty($acf_type)) return;
+        if (!($acf_type == 'group' || $acf_type == 'repeater')) return;
 
         $field_type_name = $type_name . '_' . $this->config::camel_case($field_group['graphql_field_name']) . '_' . ucfirst($this->config::camel_case($config['name']));
-
 
         if (!isset($config['sub_fields']) && !is_array($config['sub_fields']) && count($config['sub_fields']) < 1)
             return;
@@ -105,7 +92,6 @@ class RegisterTypes
                 'description' => $description,
             ];
         }
-
 
         if ($acf_type == 'group')
             $input_name = $field_type_name . "_GroupInput";

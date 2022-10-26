@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // if namespace Zngly\ACFM is not defined
-if (!class_exists('Zngly\\ACFM\\Mutations')) {
+if (!class_exists('Zngly\\ACFM\\Mutations\\Mutations')) {
     // require the autoloader in wordpress/vendor/autoload.php
     // if the autoloader is not found, exit with an error message
     if (!file_exists(__DIR__ . '/wordpress/vendor/autoload.php')) {
@@ -60,14 +60,12 @@ function init()
         add_action('admin_init', __NAMESPACE__ . '\show_admin_notice');
         return;
     }
-    // register acf input types such as groups
-    new RegisterTypes();
 
-    // run the inputs filtering
-    new RegisterInputs();
+    // register necessary types before adding mutations
+    new \Zngly\ACFM\Register\Register();
 
     // run the post object actions
-    Mutations::registerMutations();
+    new \Zngly\ACFM\Mutations\Mutations();
 }
 
 add_action('init', '\Zngly\ACFM\init');

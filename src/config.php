@@ -286,9 +286,7 @@ class Config
                 break;
             case 'relationship':
                 if (isset($config['post_type']) && is_array($config['post_type'])) {
-                    // if ($this->type_registry->get_type($field_type_name) == $field_type_name)
-                    //     $type = $field_type_name;
-                    // else {
+
                     $type_names = [];
                     foreach ($config['post_type'] as $post_type)
                         if (in_array($post_type, get_post_types(['show_in_graphql' => true]), true))
@@ -298,7 +296,6 @@ class Config
                         $type = 'PostObjectUnion';
                     else
                         $type = $field_type_name;
-                    // }
                 } else
                     $type = 'PostObjectUnion';
 
@@ -369,7 +366,8 @@ class Config
                 $final_type = $field_type_name . "_GroupInput";
                 break;
             case 'google_map':
-                $final_type = $field_type_name;
+                // $final_type = 'ACF_GoogleMap';
+                $final_type = null;
                 break;
             case 'repeater':
                 $field_type_name = $type_name . '_' . ucfirst(self::camel_case($field_group['graphql_field_name'])) . '_' . ucfirst(self::camel_case($config['name']));

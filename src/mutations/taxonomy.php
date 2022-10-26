@@ -7,19 +7,18 @@ use GraphQL\Type\Definition\ResolveInfo;
 use WP_Taxonomy;
 use WPGraphQL\AppContext;
 use Zngly\ACFM\Config;
-use Zngly\ACFM\Mutations;
 
-class Taxonomy
+class Taxonomy extends Mutations
 {
 
     public function __construct()
     {
-        self::filter_terms_input();
+        $this->filter_terms_input();
 
-        self::action_terms_update();
+        $this->action_terms_update();
     }
 
-    public static function filter_terms_input()
+    private function filter_terms_input()
     {
         add_filter('graphql_term_object_insert_term_args', function (array $insert_args, array $input, WP_Taxonomy $taxonomy, string $mutation_name) {
 
@@ -43,10 +42,10 @@ class Taxonomy
         }, 10, 4);
     }
 
-    public static function action_terms_update()
+    private function action_terms_update()
     {
         add_action('graphql_update_term', function (int $term_id, WP_Taxonomy $taxonomy, array $args, string $mutation_name, AppContext $context, ResolveInfo $info) {
-            Mutations::updater($term_id, $args, $taxonomy->name);
+            $this->updater($term_id, $args, $taxonomy->name);
         }, 10, 6);
     }
 }

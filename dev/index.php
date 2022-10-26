@@ -17,6 +17,7 @@ class Init
             Init::introspection();
             Init::jwt_auth();
             Init::cors();
+            Init::maps();
         }, 1);
 
         add_action('init', function () {
@@ -76,5 +77,19 @@ class Init
     {
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Headers: Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
+    }
+
+    public static function maps()
+    {
+        // read dot env file if exists
+        if (file_exists(__DIR__ . '/.env')) {
+            $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
+            $dotenv->load();
+
+            // set the google maps api key
+            $google_maps_api_key = $_ENV['GOOGLE_MAPS_API_KEY'];
+
+            echo "<script src=\"https://maps.googleapis.com/maps/api/js?key={$google_maps_api_key}&callback=initMap\" async defer></script>";
+        }
     }
 }
