@@ -25,7 +25,8 @@ If an acf type needs a specific graphql type such as a custom enum then specify
 
 ### Limitations
 
-Currently the mutations will not be set for objects nested with more than one child deep.
+- Currently the mutations will not be set for objects nested with more than one child deep.
+- Do not name your acf fields the same name as any of the fields that already exist in the wpgrahql schema. E.g. status, author, id, databaseId...
 
 ### Zip Install
 
