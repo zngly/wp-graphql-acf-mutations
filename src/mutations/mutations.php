@@ -95,6 +95,8 @@ class Mutations
                                             $post_key = $field['name'] . "_" . $r_key . "_" . $sub_field['name'];
                                             $post_value = $r_value[$graphql_name];
 
+                                            $post_value = self::get_value($post_value, $sub_field['type']);
+
                                             update_post_meta($post_id, $post_key, $post_value);
                                             update_post_meta($post_id, "_" . $post_key, $sub_field['key']);
                                         }
@@ -116,9 +118,7 @@ class Mutations
             }
     }
 
-
-
-    public static function update_single_field($id, $value, $field_name, $field_type, $type_name)
+    public static function get_value($value, $field_type)
     {
         // if file types are images or file, make sure an ID is passed
         // accept guid or ids
@@ -128,6 +128,14 @@ class Mutations
         // accept guid or ids
         if ($field_type === 'post_object')
             $value = ACFMUtils::mapPostIdsFromGids($value);
+
+        return $value;
+    }
+
+
+    public static function update_single_field($id, $value, $field_name, $field_type, $type_name)
+    {
+        $value = self::get_value($value, $field_type);
 
         // @todo: add filter to custom post types
         $custom_post_types = ["Category", "Tag", "Option", "Options"];
