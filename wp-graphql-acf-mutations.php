@@ -5,7 +5,7 @@
  * Description:       Adds Advanced Custom Fields Mutations to the WPGraphQL Schema
  * Author:            Vlad-Anton Medves
  * Text Domain:       wp-graphql-acf
- * Version:           v1.1.2
+ * Version:           v1.1.3
  * Requires PHP:      7.0
  *
  * @package         WPGraphQL_ACF_Mutations

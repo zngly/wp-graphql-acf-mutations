@@ -5,14 +5,8 @@ namespace Zngly\ACFM;
 use Zngly\ACFM\Mutations\PostObject;
 use Zngly\ACFM\Mutations\MediaItem;
 use Zngly\ACFM\Mutations\Taxonomy;
-
+use Zngly\ACFM\Mutations\UserObject;
 use Zngly\ACFM\Utils as ACFMUtils;
-
-// add_action('graphql_post_object_mutation_update_additional_data', function ($post_id, $input, $post_type_object) {
-//     if ($post_type_object->name === "my_post_type") {
-//         if (isset($input['customInput'])) update_post_meta($post_id, 'custom_input', $input['customInput']);
-//     }
-// }, 10, 3);
 
 /**
  * Mutations class.
@@ -25,6 +19,7 @@ class Mutations
     {
         new MediaItem();
         new PostObject();
+        new UserObject();
         new Taxonomy();
     }
 
@@ -144,6 +139,9 @@ class Mutations
 
             if (self::should_update($value)) update_field($field_name, $value, $post_id);
             else delete_field($field_name, $post_id);
+        } else if ($type_name === 'User') {
+            if (self::should_update($value)) update_user_meta($id, $field_name, $value);
+            else delete_user_meta($id, $field_name);
         } else {
             if (self::should_update($value)) update_field($field_name, $value, $id);
             else delete_field($field_name, $id);
